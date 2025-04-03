@@ -20,19 +20,22 @@ function generatePassword(length: number = 12): string {
   return password
 }
 
+// Add as a separate command
+cli
+  .command("generate-pass", "Generate a random secure password")
+  .option("--length <length>", "Length of the password", { default: 12 })
+  .action((options) => {
+    console.log(generatePassword(options.length))
+  })
+
+// Modify your existing new command to remove the generate-pass option
 cli
   .command(
     "new [template] [project-name]",
     "Create a new project from a template"
   )
   .option("--silent", "Do not print any logs")
-  .option("--generate-pass", "Generate a random secure password")
   .action(async (template, projectName, flags) => {
-    if (flags.generatePass) {
-      console.log(generatePassword())
-      process.exit(0)
-    }
-
     // Check if both arguments are provided
     if (!template || !projectName) {
       console.error("Error: Both template and project-name are required.")

@@ -3,8 +3,9 @@
   "type": "module",
   "scripts": {
     "s": "bun --watch scripts/run.ts",
-    "build:cli": "bun build src/cli.ts --outdir dist --target node",
-    "link:cli": "chmod +x dist/cli.js && ln -sf $(pwd)/dist/cli.js ~/bin/cli-ts"
+    "build": "bun build src/cli.ts --outdir dist --target node && echo '#!/usr/bin/env node' | cat - dist/cli.js > temp && mv temp dist/cli.js",
+    "link": "chmod +x dist/cli.js && ln -sf $(pwd)/dist/cli.js ~/bin/cli-ts",
+    "install": "bun run build && bun run link"
   },
   "bin": {
     "cli-ts": "./dist/cli.js"
