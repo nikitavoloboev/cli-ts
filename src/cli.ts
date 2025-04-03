@@ -2,8 +2,23 @@ import { cac } from "cac"
 import os from "os"
 import fs from "fs/promises"
 import path from "path"
+import crypto from "crypto"
 
 const cli = cac("cli-ts")
+
+function generatePassword(length: number = 12): string {
+  const chars =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?"
+  const randomBytes = crypto.randomBytes(length)
+  let password = ""
+
+  for (let i = 0; i < length; i++) {
+    const randomIndex = randomBytes[i]! % chars.length
+    password += chars[randomIndex]
+  }
+
+  return password
+}
 
 cli
   .command(
@@ -11,7 +26,13 @@ cli
     "Create a new project from a template"
   )
   .option("--silent", "Do not print any logs")
+  .option("--generate-pass", "Generate a random secure password")
   .action(async (template, projectName, flags) => {
+    if (flags.generatePass) {
+      console.log(generatePassword())
+      process.exit(0)
+    }
+
     // Check if both arguments are provided
     if (!template || !projectName) {
       console.error("Error: Both template and project-name are required.")

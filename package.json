@@ -1,8 +1,13 @@
 {
-  "name": "ts",
+  "name": "cli-ts",
   "type": "module",
   "scripts": {
-    "s": "bun --watch scripts/run.ts"
+    "s": "bun --watch scripts/run.ts",
+    "build:cli": "bun build src/cli.ts --outdir dist --target node",
+    "link:cli": "chmod +x dist/cli.js && ln -sf $(pwd)/dist/cli.js ~/bin/cli-ts"
+  },
+  "bin": {
+    "cli-ts": "./dist/cli.js"
   },
   "devDependencies": {
     "@types/bun": "^1.2.5"
