@@ -20,15 +20,12 @@ function generatePassword(length: number = 12): string {
   return password
 }
 
-// Add as a separate command
 cli
   .command("generate-pass", "Generate a random secure password")
   .option("--length <length>", "Length of the password", { default: 12 })
   .action((options) => {
     console.log(generatePassword(options.length))
   })
-
-// Modify your existing new command to remove the generate-pass option
 cli
   .command(
     "new [template] [project-name]",
@@ -36,7 +33,6 @@ cli
   )
   .option("--silent", "Do not print any logs")
   .action(async (template, projectName, flags) => {
-    // Check if both arguments are provided
     if (!template || !projectName) {
       console.error("Error: Both template and project-name are required.")
       cli.outputHelp()
@@ -46,27 +42,19 @@ cli
     const silent = flags.silent
     const sourcePath = path.join(os.homedir(), "new", template)
     const destPath = path.join(process.cwd(), projectName)
-
-    // Check if the template exists
     try {
       await fs.access(sourcePath)
     } catch {
       console.error(`Error: Template "${template}" not found at ${sourcePath}`)
       process.exit(1)
     }
-
-    // Check if the destination already exists
     try {
       await fs.access(destPath)
       console.error(
         `Error: Destination "${projectName}" already exists at ${destPath}`
       )
       process.exit(1)
-    } catch {
-      // Destination does not exist, proceed with copying
-    }
-
-    // Copy the template to the destination
+    } catch {}
     try {
       await fs.cp(sourcePath, destPath, { recursive: true })
       if (!silent) {
