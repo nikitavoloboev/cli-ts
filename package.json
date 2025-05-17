@@ -11,10 +11,10 @@
     "cli-ts": "./dist/cli.js"
   },
   "devDependencies": {
-    "@types/bun": "^1.2.5"
+    "@types/bun": "^1.2.13"
   },
   "peerDependencies": {
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.3"
   },
   "prettier": {
     "semi": false
